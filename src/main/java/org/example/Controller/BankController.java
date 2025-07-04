@@ -1,5 +1,4 @@
 package org.example.Controller;
-import org.example.Model.job;
 import org.example.Service.BankServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -7,8 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import java.util.List;
+import org.example.Model.CreateAccount;
+
 @RestController
-@RequestMapping("/account");
+@RequestMapping("/account")
 
 public class BankController {
     private static final Logger log = LoggerFactory.getLogger(BankController.class);
