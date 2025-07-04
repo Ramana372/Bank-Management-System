@@ -1,0 +1,37 @@
+<!-- src/main/resources/templates/account.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Search Account</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<h1>Search Bank Account by ID</h1>
+
+<form th:action="@{/account/__id__}" method="get" onsubmit="replaceIdInAction(this)">
+    <label for="id">Enter Account ID:</label>
+    <input type="number" id="id" name="id" required>
+    <button type="submit">Search</button>
+</form>
+
+<!-- This will display account details if present -->
+<div th:if="${account != null}">
+    <h2>Account Found:</h2>
+    <p>ID: <span th:text="${account.id}"></span></p>
+    <p>Name: <span th:text="${account.name}"></span></p>
+    <p>Email: <span th:text="${account.email}"></span></p>
+    <p>Age: <span th:text="${account.age}"></span></p>
+    <p>Type: <span th:text="${account.accountType}"></span></p>
+    <p>Balance: <span th:text="${account.balance}"></span></p>
+</div>
+
+<a href="/account">Back to All Accounts</a>
+
+<script>
+    function replaceIdInAction(form) {
+        const id = document.getElementById('id').value;
+        form.action = `/account/${id}`;
+    }
+</script>
+</body>
+</html>

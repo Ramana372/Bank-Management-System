@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Delete Account</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<h1>Delete Account</h1>
+<form th:action="@{/account/{id}(id=${deleteId})}" method="post" onsubmit="return confirm('Are you sure?');">
+    <input type="hidden" name="_method" value="delete" />
+    <label>Enter Account ID to Delete:</label>
+    <input type="number" name="deleteId" required />
+    <button type="submit">Delete</button>
+</form>
+</body>
+</html>

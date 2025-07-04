@@ -1,45 +1,68 @@
 package org.example.Controller;
+
+import org.example.Model.CreateAccount;
 import org.example.Service.BankServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 import java.util.List;
-import org.example.Model.CreateAccount;
 
-@RestController
+@Controller
 @RequestMapping("/account")
-
 public class BankController {
-    private static final Logger log = LoggerFactory.getLogger(BankController.class);
 
     @Autowired
     private BankServices bankServices;
+
+    // Display all accounts
     @GetMapping
-    public List<CreateAccount> getAllAccounts(){
-        List<CreateAccount> temp=bankServices.getAllAccounts();
-        log.info(temp.toString());
-        return temp;
-
+    public String getAllAccounts(Model model) {
+        List<CreateAccount> accounts = bankServices.getAllAccounts();
+        model.addAttribute("accounts", accounts);
+        return "index";
     }
+
+    @GetMapping("/search")
+    public String showSearchForm() {
+        return "account";  // This must match the name of the HTML file
+    }
+
+
     @GetMapping("/{id}")
-    public CreateAccount getbankByID(@PathVariable Long id){
-        CreateAccount temp=bankServices.getCreateAccountById(id);
-        log.info(temp.toString());
-        return temp;
+    public String getAccountById(@PathVariable Long id, Model model) {
+        CreateAccount account = bankServices.getCreateAccountById(id);
+        model.addAttribute("account", account);
+        return "account";
     }
 
+    // Display add an account form
+    @GetMapping("/add")
+    public String showAddAccountForm(Model model) {
+        model.addAttribute("createAccount", new CreateAccount());
+        return "addAccount";
+    }
+
+    // Handle account creation
     @PostMapping
-    public String AddAccount(@RequestBody CreateAccount createAccount){
+    public String addAccount(@ModelAttribute CreateAccount createAccount, Model model) {
         bankServices.addCreateAccount(createAccount);
-        return "Account Added Successfully";
+        model.addAttribute("message", "Account Added Successfully!");
+        return "redirect:/account";
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteAccount(@PathVariable Long id){
+    // Show delete form
+    @GetMapping("/delete")
+    public String showDeleteForm() {
+        return "deleteAccount";
+    }
+
+    // Handle delete by ID
+    @PostMapping("/{id}")
+    public String deleteAccount(@PathVariable Long id, Model model) {
         bankServices.deleteCreateAccount(id);
-        return "Account Deleted Successfully";
+        model.addAttribute("message", "Account Deleted Successfully!");
+        return "redirect:/account";
     }
 }
